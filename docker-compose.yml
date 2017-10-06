@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+
+  wordpress:
+    image: wordpress
+    ports:
+      - 8000:80
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_password
+      WORDPRESS_DB_NAME: wordpress
+
+  mysql:
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_password
+
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+  # user-service:
+  #   build: ./user-service
+  #   ports:
+  #     - 8000:9000
+  #     - 5005:5005
+  #   volumes:
+  #     - "./user-service:/opt/user-service"
+  #     - "~/.ivy2:/root/.ivy2"
+  #     - "~/.sbt:/root/.sbt"
+  #   environment:
+  #     MONGO_URL: mongo
+  #     REDIS_URL: redis
