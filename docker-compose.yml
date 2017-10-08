@@ -34,15 +34,18 @@ services:
     ports:
       - 6379:6379
 
-  # user-service:
-  #   build: ./user-service
-  #   ports:
-  #     - 8000:9000
-  #     - 5005:5005
-  #   volumes:
-  #     - "./user-service:/opt/user-service"
-  #     - "~/.ivy2:/root/.ivy2"
-  #     - "~/.sbt:/root/.sbt"
-  #   environment:
-  #     MONGO_URL: mongo
-  #     REDIS_URL: redis
+  user-service:
+    build: ./user-service
+    depends_on:
+      - mongo
+      - redis
+    ports:
+      - 9000:9000
+      - 5005:5005
+    volumes:
+      - "./user-service:/opt/user-service"
+      - "~/.ivy2:/root/.ivy2"
+      - "~/.sbt:/root/.sbt"
+    environment:
+      MONGO_URI: mongodb://mongo:27017/users
+      REDIS_HOST: redis
